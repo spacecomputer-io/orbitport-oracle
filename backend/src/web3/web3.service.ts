@@ -58,7 +58,6 @@ export class Web3Service implements OnModuleInit {
     feedId: bigint,
     rate: bigint,
     timestamp: bigint,
-    publisher: Address,
   ): Promise<Hash> {
     try {
       // Create leaf input data for update (feedId, rate, timestamp)
@@ -80,7 +79,7 @@ export class Web3Service implements OnModuleInit {
           '0x0000000000000000000000000000000000000000000000000000000000000000' as `0x${string}`,
         blockNumber: BigInt(await this.publicClient.getBlockNumber()),
         chainId: await this.publicClient.getChainId(),
-        aggregator: publisher,
+        aggregator: this.walletClient.account?.address as Address,
         blockHash:
           '0x0000000000000000000000000000000000000000000000000000000000000000' as `0x${string}`,
         signature: [0n, 0n] as [bigint, bigint], // Empty signature for testing
