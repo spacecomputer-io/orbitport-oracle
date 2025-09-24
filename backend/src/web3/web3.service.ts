@@ -12,6 +12,7 @@ import {
 import { privateKeyToAccount } from 'viem/accounts';
 import EOFeedManager from '../../abis/EOFeedManager';
 import { arbitrumSepolia } from 'viem/chains';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class Web3Service implements OnModuleInit {
@@ -19,10 +20,12 @@ export class Web3Service implements OnModuleInit {
   private publicClient: PublicClient;
   private contractAddress: `0x${string}`;
 
+  constructor(private readonly configService: ConfigService) {}
+
   onModuleInit() {
-    const privateKey = process.env.PRIVATE_KEY;
-    const rpcUrl = process.env.RPC_URL;
-    const contractAddr = process.env.CONTRACT_ADDRESS;
+    const privateKey = this.configService.get<string>('PRIVATE_KEY');
+    const rpcUrl = this.configService.get<string>('RPC_URL');
+    const contractAddr = this.configService.get<string>('CONTRACT_ADDRESS');
 
     if (!privateKey || !rpcUrl || !contractAddr) {
       throw new Error(
